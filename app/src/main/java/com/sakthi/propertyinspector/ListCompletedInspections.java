@@ -79,7 +79,15 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     InspectedFiles existingProperty = gson.fromJson(jsonObject.toString(), InspectedFiles
                             .class);
-                    propertyInfoArrayList.add(existingProperty);
+
+                    if (propertyInfoArrayList.size() == 0) {
+                        propertyInfoArrayList.add(existingProperty);
+                    }
+                    for (InspectedFiles f : propertyInfoArrayList) {
+                        if (!f.filePath.equals(existingProperty.filePath)) {
+                            propertyInfoArrayList.add(existingProperty);
+                        }
+                    }
                 }
             }
         }catch (Exception e){

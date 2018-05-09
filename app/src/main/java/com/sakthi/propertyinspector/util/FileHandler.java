@@ -145,6 +145,7 @@ public class FileHandler {
 
         File outputFile = new File(outputPath);
         FileOutputStream osstream = null;
+
         try {
             osstream = new FileOutputStream(outputFile);
             //write basic info
@@ -240,10 +241,11 @@ public class FileHandler {
         String newFileName = outputPath.split(".csv")[0];
         newFileName = newFileName + "_" + (versionNumber) + ".csv";
 
-        File outputFile = new File(newFileName);
+        File outputFile = new File(outputPath);
         FileOutputStream osstream = null;
+
         try {
-            osstream = new FileOutputStream(outputFile);
+            osstream = new FileOutputStream(outputFile, true);
             //write basic info
             osstream.write(formatToCSV(CSVInfoKey.KEY_BASICINFO.keyCode, preFix, mPropertyInfo.toCSVBasicInfo()));
             //write area info
