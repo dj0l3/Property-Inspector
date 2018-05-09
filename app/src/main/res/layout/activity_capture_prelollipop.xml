@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <SurfaceView
+        android:id="@+id/surface"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+
+    <android.support.v4.view.ViewPager
+        android:layout_gravity="top"
+        android:id="@+id/itemTitlePager"
+        android:layout_width="match_parent"
+        android:layout_height="64dp">
+    </android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:layout_gravity="bottom"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <CheckBox
+            android:id="@+id/checkboxFlash"
+            android:background="#33888888"
+            android:textIsSelectable="true"
+            android:text="Flash OFf"
+            android:textColor="@android:color/white"
+            android:textSize="24sp"
+            android:textStyle="bold|italic"
+            android:gravity="center_horizontal"
+            android:typeface="serif"
+            android:button="@android:color/transparent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:padding="8dp"
+            android:text="Tap To Capture Item Photo"
+            android:textStyle="italic"
+            android:typeface="serif"
+            android:textSize="14sp"
+            android:background="#66ffffff"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+    </LinearLayout>
+
+
+</FrameLayout>
+</LinearLayout>

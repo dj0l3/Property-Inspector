@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent" android:layout_height="wrap_content">
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_margin="@dimen/area_room_no_pad"
+        android:padding="8dp"
+        android:id="@+id/textAreaRoomNo"
+        android:textSize="@dimen/area_roomno_textsize"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:text="10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <LinearLayout
+
+        android:padding="8dp"
+        android:id="@+id/layoutAreaPerc"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:textStyle="bold"
+            android:textSize="@dimen/textsize_area_quest_perc"
+            android:id="@+id/textQuestAnsweredPerc"
+            android:layout_margin="@dimen/area_room_no_pad"
+            android:text="50%"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <LinearLayout
+
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:layout_toRightOf="@id/textAreaRoomNo"
+        android:layout_toLeftOf="@+id/layoutAreaPerc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:typeface="sans"
+            android:textSize="@dimen/textsize_area_alias"
+            android:padding="4dp"
+            android:id="@+id/textRoomAlias"
+            android:text="Ground Floor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <LinearLayout
+
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:textSize="@dimen/textsize_3rdinfo"
+                android:id="@+id/textRoomType"
+                android:text="Type : Bed Room"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:textSize="@dimen/textsize_3rdinfo"
+                android:id="@+id/textRoomStatus"
+                android:text="Status : Common Area"
+                android:gravity="right"
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_alignParentBottom="true"
+        android:background="@android:color/darker_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp" />
+
+</RelativeLayout>

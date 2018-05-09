@@ -1,0 +1,209 @@
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="com.sakthi.propertyinspector.HomeActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:foregroundGravity="center"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+
+                android:id="@+id/viewDirAction"
+                android:clickable="true"
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/imageDirAction"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:src="@android:drawable/ic_media_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <LinearLayout
+                    android:layout_toLeftOf="@id/imageDirAction"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/lblAppDirectory"
+                    android:textSize="16sp"
+                    android:text="@string/app_dir_path"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/valAppDirectory"
+                    android:text="/sdcard/inventory/"
+                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+
+               <!--<LinearLayout
+
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <Button
+                        android:layout_gravity="center_horizontal"
+                        android:textSize="11sp"
+                        android:id="@+id/but_settings_choose"
+                        android:text="@string/button_choose"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>-->
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <android.support.v7.widget.CardView
+                    android:layout_marginTop="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_margin="8dp"
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+
+                        <TextView
+                            android:id="@+id/lblPhotoQuality"
+                            android:textSize="18sp"
+                            android:text="@string/text_photo_quality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <Spinner
+                            android:id="@+id/comboPhotoQuality"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"></Spinner>
+
+
+                        <TextView
+                            android:layout_margin="8dp"
+                            android:background="@android:color/darker_gray"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp" />
+
+                        <TextView
+                            android:id="@+id/lblExportName"
+                            android:textSize="18sp"
+                            android:text="@string/export_file_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <EditText
+                            android:id="@+id/editExportName"
+                            android:hint="02"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:text="@string/ftpHost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <EditText
+                            android:id="@+id/txtFTPHost"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            />
+
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:text="@string/ftpUserName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <EditText
+                            android:id="@+id/txtFTPUserName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:textSize="18sp"
+                            android:text="@string/ftpPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content" />
+
+                        <EditText
+                            android:id="@+id/txtFTPPassword"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"/>
+
+                    </LinearLayout>
+
+
+                </android.support.v7.widget.CardView>
+
+                <Button
+                    android:id="@+id/but_settings_save"
+                    android:text="Update Settings"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="19sp"
+                    android:typeface="serif"
+                    android:textStyle="bold"
+                    android:background="@drawable/but_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+    </LinearLayout>
+
+   </android.support.design.widget.CoordinatorLayout>

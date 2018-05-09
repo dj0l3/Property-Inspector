@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.sakthi.propertyinspector.HomeActivity"
+    tools:showIn="@layout/activity_home">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:paddingEnd="8dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingStart="8dp">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+
+            <ImageView
+                android:layout_width="300dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/logo" />
+
+
+            <Button
+                android:id="@+id/butOpenInspection"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/but_selector"
+                android:text="@string/button_open_inspection"
+                android:textColor="@color/color_text_default"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/butContinueInspection"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:layout_margin="5dp"
+                android:background="@drawable/but_selector"
+                android:text="@string/button_continue_inspection"
+                android:textColor="@color/color_text_default"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/butPickInstance"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+
+                android:layout_margin="5dp"
+                android:background="@drawable/but_selector"
+                android:text="@string/button_pick_instance"
+                android:textColor="@color/color_text_default"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+
+            <Button
+                android:id="@+id/butDeleteAllInspectedFiles"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_margin="5dp"
+                android:background="@drawable/but_selector"
+                android:text="@string/button_delete_all_inspected_files"
+                android:textColor="@color/color_text_default"
+                android:textSize="16sp"
+                android:textStyle="bold|italic"
+                android:typeface="monospace" />
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recentInspection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:visibility="gone"></android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+
+
+        <TextView
+
+            android:id="@+id/hintText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/website"
+            android:textColor="#00aaee"
+            android:textSize="13sp"
+            android:textStyle="italic"
+            android:typeface="monospace" />
+
+        <TextView
+            android:id="@+id/lblVersionInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="Version Number: v57"
+            android:textColor="#000"
+            android:textSize="13sp"
+            android:typeface="monospace" />
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>

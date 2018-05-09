@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_room_basic"
+        android:orderInCategory="100"
+        android:title="add room basic items"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_room_specific"
+        android:orderInCategory="101"
+        android:title="add room specific items"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_room_othes"
+        android:orderInCategory="102"
+        android:title="add room others items"
+        app:showAsAction="never" />
+
+</menu>
