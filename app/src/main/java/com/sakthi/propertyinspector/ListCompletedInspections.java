@@ -8,6 +8,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,6 +27,7 @@ import com.sakthi.propertyinspector.data.InspectedFiles;
 import com.sakthi.propertyinspector.data.PhotoData;
 import com.sakthi.propertyinspector.data.PropertyInfo;
 import com.sakthi.propertyinspector.data.RoomItem;
+import com.sakthi.propertyinspector.data.SearchResultFile;
 import com.sakthi.propertyinspector.repository.FTPRepository;
 import com.sakthi.propertyinspector.util.AppPreference;
 import com.sakthi.propertyinspector.util.FileHandler;
@@ -66,6 +68,20 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         loadFileLists();
     }
 
+    private boolean isFilePresent(String path) {
+        boolean exists;
+
+        File file = new File(path);
+        exists = file.exists();
+
+        if (!exists) {
+            file = new File(path);
+            exists = file.exists();
+        }
+
+        return exists;
+    }
+
     private void loadFileLists(){
         Gson gson = new Gson();
         AppPreference preference = new AppPreference(this);
@@ -81,11 +97,15 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
                             .class);
 
                     if (propertyInfoArrayList.size() == 0) {
-                        propertyInfoArrayList.add(existingProperty);
+                        if (isFilePresent(existingProperty.filePath)) {
+                            propertyInfoArrayList.add(existingProperty);
+                        }
                     }
                     for (InspectedFiles f : propertyInfoArrayList) {
-                        if (!f.filePath.equals(existingProperty.filePath)) {
-                            propertyInfoArrayList.add(existingProperty);
+                        if (f.filePath.equals(existingProperty.filePath)) {
+                            if (!isFilePresent(existingProperty.filePath)) {
+                                propertyInfoArrayList.add(existingProperty);
+                            }
                         }
                     }
                 }
