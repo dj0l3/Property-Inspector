@@ -492,7 +492,7 @@ public class FilePickerActivity extends AppCompatActivity implements FTPReposito
 
         if (files != null && files.size() > 0){
             if (files.get(0).isLocateInFTP){
-                dialogSearchResult.findViewById(R.id.btnDownload).setVisibility(View.GONE);
+                dialogSearchResult.findViewById(R.id.btnDownload).setVisibility(View.VISIBLE);
                 chkSelectAll.setVisibility(View.GONE);
             }else {
                 dialogSearchResult.findViewById(R.id.btnDownload).setVisibility(View.GONE);
