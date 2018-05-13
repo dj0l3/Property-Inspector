@@ -416,6 +416,18 @@ public class PropertyInfo {
 
     }
 
+    public int getTotalPictures() {
+        int itemsCaptured=0;
+
+        for(RoomItem item:mItemList){
+            if (item.getNumberOfPhotos() > 0) {
+                itemsCaptured += item.getNumberOfPhotos();
+            }
+        }
+
+        return itemsCaptured;
+    }
+
 
     public static abstract class Statics{
 
