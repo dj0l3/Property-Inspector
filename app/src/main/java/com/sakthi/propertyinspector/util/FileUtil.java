@@ -355,7 +355,7 @@ public class FileUtil {
         AppPreference appPreference = new AppPreference(context);
         File appDir = new File(appPreference.getAppDirPath());
 
-        appPreference.setInspectedProperty(null);
+        appPreference.setInspectedProperty("");
 
         return deleteFilesRecursive(appDir);
     }

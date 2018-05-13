@@ -46,7 +46,7 @@ import java.util.ArrayList;
  * satheesh@sanghish.com
  */
 public class ListCompletedInspections extends AppCompatActivity implements View.OnClickListener, FTPRepository.FTPConnectionListener,
-        FTPRepository.FTPUploadListener{
+        FTPRepository.FTPUploadListener {
 
     private ListInspectedFilesAdapter adapter;
     private LinearLayout lnrRoot;
@@ -82,7 +82,7 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         return exists;
     }
 
-    private void loadFileLists(){
+    private void loadFileLists() {
         Gson gson = new Gson();
         AppPreference preference = new AppPreference(this);
         String inspectedFiles = preference.getInspectedProperty();
@@ -91,26 +91,30 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
             JSONArray jsonArray;
             if (inspectedFiles != null && inspectedFiles.length() > 0) {
                 jsonArray = new JSONArray(inspectedFiles);
-                for (int i=0; i<jsonArray.length(); i++){
+                for (int i = 0; i < jsonArray.length(); i++) {
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     InspectedFiles existingProperty = gson.fromJson(jsonObject.toString(), InspectedFiles
                             .class);
 
-                    if (propertyInfoArrayList.size() == 0) {
-                        if (isFilePresent(existingProperty.filePath)) {
+                    if (isFilePresent(existingProperty.filePath)) {
+                        if (propertyInfoArrayList.size() == 0) {
                             propertyInfoArrayList.add(existingProperty);
-                        }
-                    }
-                    for (InspectedFiles f : propertyInfoArrayList) {
-                        if (f.filePath.equals(existingProperty.filePath)) {
-                            if (!isFilePresent(existingProperty.filePath)) {
+                        } else {
+                            boolean alreadyExist = false;
+                            for (InspectedFiles f : propertyInfoArrayList) {
+                                if (f.filePath.equals(existingProperty.filePath)) {
+                                    alreadyExist = true;
+                                }
+                            }
+
+                            if (!alreadyExist) {
                                 propertyInfoArrayList.add(existingProperty);
                             }
                         }
                     }
                 }
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -118,11 +122,10 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         recyclerView.setHasFixedSize(true);
         adapter = new ListInspectedFilesAdapter(propertyInfoArrayList, this, this);
         recyclerView.setAdapter(adapter);
-        if (propertyInfoArrayList != null && propertyInfoArrayList.size()>0)
-        {
+        if (propertyInfoArrayList != null && propertyInfoArrayList.size() > 0) {
             recyclerView.setVisibility(View.VISIBLE);
             lblNoInspectedFiles.setVisibility(View.GONE);
-        }else{
+        } else {
             recyclerView.setVisibility(View.GONE);
             lblNoInspectedFiles.setVisibility(View.VISIBLE);
         }
@@ -131,33 +134,33 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
     @Override
     public void onClick(View view) {
         InspectedFiles inspectedFiles = null;
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnOpenInspectedFiles:
                 inspectedFiles = (InspectedFiles) view.getTag(R.id.lblAddress);
                 if (inspectedFiles != null) {
                     final String path = inspectedFiles.filePath;
-                    final AppPreference pref=((PropertyInspector)getApplication()).getPreference();
+                    final AppPreference pref = ((PropertyInspector) getApplication()).getPreference();
 
-                    if(!FileUtil.isValidPropertyFile(path)){
+                    if (!FileUtil.isValidPropertyFile(path)) {
                         Snackbar.make(lnrRoot, "Pick Valid Property File", Snackbar.LENGTH_LONG).show();
                         return;
                     }
 
-                    String workDir=FileUtil.getParentDirectory(path);
+                    String workDir = FileUtil.getParentDirectory(path);
                     pref.setWorkDirPath(workDir);
                     pref.setWorkFilePath(path);
-                    loadPropertyFile(path,false);
+                    loadPropertyFile(path, false);
 
                 }
                 break;
             case R.id.btnUploadToFTP:
-                if (isConnectedWifi()){
+                if (isConnectedWifi()) {
                     inspectedFiles = (InspectedFiles) view.getTag(R.id.lblUniqueKey);
                     int position = (int) view.getTag(R.id.btnOpenInspectedFiles);
                     if (inspectedFiles != null) {
                         new UploadImagesFTP(inspectedFiles, position).execute();
                     }
-                }else{
+                } else {
                     Toast.makeText(this, "Internet is not connected with WIFI network. Please connect through wifi and try to upload the " +
                             "files.", Toast.LENGTH_LONG).show();
                 }
@@ -166,7 +169,7 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         }
     }
 
-    private boolean isConnectedWifi(){
+    private boolean isConnectedWifi() {
         ConnectivityManager connManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
@@ -178,36 +181,37 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
     }
 
 
-    private void loadPropertyFile(final String path,final boolean newFile){
+    private void loadPropertyFile(final String path, final boolean newFile) {
 
 
-        final ProgressDialog lProgressDialog=new ProgressDialog(this);
+        final ProgressDialog lProgressDialog = new ProgressDialog(this);
         lProgressDialog.setTitle("Please Wait");
         lProgressDialog.setMessage("Loading property file....");
         lProgressDialog.setCancelable(false);
 
-        new AsyncTask<Object,Object,Object>(){
+        new AsyncTask<Object, Object, Object>() {
 
-            public void onPreExecute(){
+            public void onPreExecute() {
                 lProgressDialog.show();
             }
+
             @Override
             protected Object doInBackground(Object[] params) {
                 try {
 
-                    AppPreference appPref=((PropertyInspector)getApplication()).getPreference();
-                    String workingDir=appPref.getWorkDirPath();
-                    String workingFile=appPref.getWorkFilePath();
+                    AppPreference appPref = ((PropertyInspector) getApplication()).getPreference();
+                    String workingDir = appPref.getWorkDirPath();
+                    String workingFile = appPref.getWorkFilePath();
 
 
                     PropertyInfo info;
 
-                    if(!newFile){
-                        info=new FileHandler().importCSV(path);
-                    }else{
-                        info=new FileHandler().importCSV(path);
+                    if (!newFile) {
+                        info = new FileHandler().importCSV(path);
+                    } else {
+                        info = new FileHandler().importCSV(path);
 //                        FileHandler.exportCSV(info,workingFile);
-                        int versionNumber = ((PropertyInspector)getApplication()).getPreference().getWorkFileBackupNumber();
+                        int versionNumber = ((PropertyInspector) getApplication()).getPreference().getWorkFileBackupNumber();
                         FileHandler.exportCSVForBackup(info, path, versionNumber);
                     }
 
@@ -218,29 +222,29 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
                         info=new FileHandler().importCSV(workingFile);
                     }*/
 
-                    ((PropertyInspector)getApplication()).setPropertyInfo(info);
-                    String imageDir=workingDir+"images/";
+                    ((PropertyInspector) getApplication()).setPropertyInfo(info);
+                    String imageDir = workingDir + "images/";
 
-                    if(newFile){
+                    if (newFile) {
 
-                        File dirImage=new File(imageDir);
-                        File[] imageFiles=dirImage.listFiles();
-                        for(File file:imageFiles)file.delete();
+                        File dirImage = new File(imageDir);
+                        File[] imageFiles = dirImage.listFiles();
+                        for (File file : imageFiles) file.delete();
 
                         return info;
 
                     }
 
-                    ArrayList<RoomItem> roomItems=info.getRoomItems();
-                    String prefix=info.getClientId()+"_"+info.getPropertyId()+"_";
-                    for(RoomItem item:roomItems){
-                        if(item.isItemDeleted())continue;
+                    ArrayList<RoomItem> roomItems = info.getRoomItems();
+                    String prefix = info.getClientId() + "_" + info.getPropertyId() + "_";
+                    for (RoomItem item : roomItems) {
+                        if (item.isItemDeleted()) continue;
 
-                        String filter=prefix+item.getRoomId()+"_"+item.getInventoryId()+"_"+item.getItemId();
-                        File[] files=FileUtil.getImageFiles(imageDir,filter);
-                        for(File file:files){
-                            Log.e(item.getRoomId()+":"+item.getItemId(),file.getName());
-                            item.addItemPhoto(new PhotoData(1,file.getName(),file.getPath()));
+                        String filter = prefix + item.getRoomId() + "_" + item.getInventoryId() + "_" + item.getItemId();
+                        File[] files = FileUtil.getImageFiles(imageDir, filter);
+                        for (File file : files) {
+                            Log.e(item.getRoomId() + ":" + item.getItemId(), file.getName());
+                            item.addItemPhoto(new PhotoData(1, file.getName(), file.getPath()));
                         }
                     }
 
@@ -251,13 +255,13 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
 
             }
 
-            public void onPostExecute(Object result){
+            public void onPostExecute(Object result) {
                 lProgressDialog.cancel();
 
-                if(result!=null && result instanceof PropertyInfo){
-                    Intent intnt=new Intent(ListCompletedInspections.this, PropertyInfoActivity.class);
+                if (result != null && result instanceof PropertyInfo) {
+                    Intent intnt = new Intent(ListCompletedInspections.this, PropertyInfoActivity.class);
                     startActivity(intnt);
-                }else if(result!=null) {
+                } else if (result != null) {
                     Snackbar.make(lnrRoot, result.toString(), Snackbar.LENGTH_LONG).show();
                 }
             }
@@ -298,7 +302,7 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
 
     boolean isFtpUploadSuccess;
 
-    class UploadImagesFTP extends AsyncTask<Void, Void, Void>{
+    class UploadImagesFTP extends AsyncTask<Void, Void, Void> {
 
 
         private InspectedFiles inspectedFiles;
@@ -309,7 +313,7 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         public UploadImagesFTP(InspectedFiles inspectedFiles, int position) {
             this.inspectedFiles = inspectedFiles;
             this.position = position;
-            pref=((PropertyInspector)getApplication()).getPreference();
+            pref = ((PropertyInspector) getApplication()).getPreference();
             repository = new FTPRepository();
             repository.setFTPConnectionListener(ListCompletedInspections.this);
             repository.setFTPUploadListener(ListCompletedInspections.this);
@@ -319,9 +323,9 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         protected void onPreExecute() {
             super.onPreExecute();
             int filesToUploaded = 1;
-            for (int i=0; i< inspectedFiles.propertyInfo.getRoomItems().size(); i++){
+            for (int i = 0; i < inspectedFiles.propertyInfo.getRoomItems().size(); i++) {
                 RoomItem roomItem = inspectedFiles.propertyInfo.getRoomItems().get(i);
-                for (int j=0; j<roomItem.getPhotosList().size(); j++){
+                for (int j = 0; j < roomItem.getPhotosList().size(); j++) {
                     filesToUploaded++;
                 }
             }
@@ -343,9 +347,9 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
             FTPSettings ftpSettings = new Gson().fromJson(pref.getFTPSettings(), FTPSettings.class);
             repository.uploadCSVFile(ftpSettings, new File(inspectedFiles.filePath),
                     inspectedFiles.propertyInfo.getPropertyId());
-            for (int i=0; i< inspectedFiles.propertyInfo.getRoomItems().size(); i++){
+            for (int i = 0; i < inspectedFiles.propertyInfo.getRoomItems().size(); i++) {
                 RoomItem roomItem = inspectedFiles.propertyInfo.getRoomItems().get(i);
-                for (int j=0; j<roomItem.getPhotosList().size(); j++){
+                for (int j = 0; j < roomItem.getPhotosList().size(); j++) {
                     PhotoData photoData = roomItem.getPhotosList().get(j);
                     repository.uploadFile(ftpSettings, new File(photoData.getImagePath()),
                             inspectedFiles.propertyInfo.getPropertyId());
@@ -363,21 +367,21 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
             if (repository != null) {
                 repository.closeFTPUploadConnection();
             }
-            if (isFtpUploadSuccess){
+            if (isFtpUploadSuccess) {
                 String inspectedFiles = pref.getInspectedProperty();
                 try {
                     JSONArray jsonArray;
                     JSONArray newItemsArray = new JSONArray();
                     if (inspectedFiles != null && inspectedFiles.length() > 0) {
                         jsonArray = new JSONArray(inspectedFiles);
-                        for (int i=0; i<jsonArray.length(); i++){
-                            if (i != position){
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            if (i != position) {
                                 newItemsArray.put(jsonArray.get(i));
                             }
                         }
                     }
                     pref.setInspectedProperty(newItemsArray.toString());
-                }catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
