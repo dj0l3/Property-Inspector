@@ -245,7 +245,7 @@ public class FileHandler {
         FileOutputStream osstream = null;
 
         try {
-            osstream = new FileOutputStream(outputFile, true);
+            osstream = new FileOutputStream(outputFile);
             //write basic info
             osstream.write(formatToCSV(CSVInfoKey.KEY_BASICINFO.keyCode, preFix, mPropertyInfo.toCSVBasicInfo()));
             //write area info
