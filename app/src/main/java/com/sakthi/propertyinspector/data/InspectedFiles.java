@@ -9,4 +9,13 @@ public class InspectedFiles {
 
     public PropertyInfo propertyInfo;
     public String filePath;
+    private int uploadedPhotos;
+
+    public void setUploadedPhotos(int photos) {
+        uploadedPhotos = photos;
+    }
+
+    public int getUploadedPhotos() {
+        return uploadedPhotos;
+    }
 }

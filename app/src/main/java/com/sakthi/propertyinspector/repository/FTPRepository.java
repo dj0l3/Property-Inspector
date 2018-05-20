@@ -93,6 +93,29 @@ public class FTPRepository {
         }
     }
 
+    public int numberOfUploadedPictures(FTPSettings ftpSettings, int pid) {
+
+        int numbUpoloadedImages = 0;
+
+        try {
+            if (fileUploadFTP == null) {
+                fileUploadFTP = this.getConnection(ftpSettings);
+                fileUploadFTP.setFileType(FTP.BINARY_FILE_TYPE);
+                fileUploadFTP.enterLocalPassiveMode();
+            }
+
+            boolean isImageExists = fileUploadFTP.changeWorkingDirectory("/inventory/" + pid + "/images");
+            if (isImageExists) {
+                numbUpoloadedImages = fileUploadFTP.listFiles().length;
+            }
+
+            return numbUpoloadedImages;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return numbUpoloadedImages;
+    }
 
     public void uploadFile(FTPSettings ftpSettings, File file, int pid) {
 

@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.sakthi.propertyinspector.R;
 import com.sakthi.propertyinspector.data.InspectedFiles;
 import com.sakthi.propertyinspector.data.PropertyInfo;
+import com.sakthi.propertyinspector.repository.FTPRepository;
 
 /**
  * Created by Satheesh on 12/06/17.
@@ -21,6 +22,7 @@ public class InspectedFilesViewHolder extends RecyclerView.ViewHolder {
     private TextView lblUniqueKey;
     private TextView propertyId;
     private TextView picturesTaken;
+    private TextView photosUploaded;
     private Button btnOpen;
     private Button btnUpload;
 
@@ -31,6 +33,7 @@ public class InspectedFilesViewHolder extends RecyclerView.ViewHolder {
         lblUniqueKey = (TextView) itemView.findViewById(R.id.lblUniqueKey);
         propertyId = (TextView) itemView.findViewById(R.id.property_id);
         picturesTaken = (TextView) itemView.findViewById(R.id.pictures_taken);
+        photosUploaded = (TextView) itemView.findViewById(R.id.pictures_uploaded);
         btnOpen = (Button) itemView.findViewById(R.id.btnOpenInspectedFiles);
         btnUpload = (Button) itemView.findViewById(R.id.btnUploadToFTP);
     }
@@ -42,6 +45,7 @@ public class InspectedFilesViewHolder extends RecyclerView.ViewHolder {
             lblUniqueKey.setText(String.valueOf(inspectedFiles.propertyInfo.getUniqueKey()));
             propertyId.setText(String.valueOf(inspectedFiles.propertyInfo.getPropertyId()));
             picturesTaken.setText(String.valueOf(inspectedFiles.propertyInfo.getTotalPictures()));
+            photosUploaded.setText(String.valueOf(inspectedFiles.getUploadedPhotos()));
 
             btnOpen.setTag(R.id.lblAddress, inspectedFiles);
             btnOpen.setTag(R.id.lblPostalCode, position);
