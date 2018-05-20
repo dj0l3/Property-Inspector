@@ -106,7 +106,7 @@ public class FTPRepository {
 
             boolean isImageExists = fileUploadFTP.changeWorkingDirectory("/inventory/" + pid + "/images");
             if (isImageExists) {
-                numbUpoloadedImages = fileUploadFTP.listFiles().length;
+                numbUpoloadedImages = fileUploadFTP.listFiles().length - 2;
             }
 
             return numbUpoloadedImages;
@@ -117,7 +117,7 @@ public class FTPRepository {
         return numbUpoloadedImages;
     }
 
-    public void uploadFile(FTPSettings ftpSettings, File file, int pid) {
+    public boolean uploadFile(FTPSettings ftpSettings, File file, int pid) {
 
         try {
             if (fileUploadFTP == null) {
@@ -154,8 +154,10 @@ public class FTPRepository {
             fis.close();
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
 
+        return true;
     }
 
     FTPClient fileUploadFTP = null;

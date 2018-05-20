@@ -8,14 +8,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,11 +28,9 @@ import com.sakthi.propertyinspector.data.InspectedFiles;
 import com.sakthi.propertyinspector.data.PhotoData;
 import com.sakthi.propertyinspector.data.PropertyInfo;
 import com.sakthi.propertyinspector.data.RoomItem;
-import com.sakthi.propertyinspector.data.SearchResultFile;
 import com.sakthi.propertyinspector.repository.FTPRepository;
 import com.sakthi.propertyinspector.util.AppPreference;
 import com.sakthi.propertyinspector.util.FileHandler;
-import com.sakthi.propertyinspector.util.FilePickerActivity;
 import com.sakthi.propertyinspector.util.FileUtil;
 
 import org.json.JSONArray;
@@ -64,6 +63,11 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
 
         snackFTPFailed = Snackbar.make(lnrRoot, "FTP Connection Failed. Please check your FTP settings.", Snackbar.LENGTH_LONG);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
 
         loadFileLists();
     }
@@ -350,7 +354,6 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         @Override
         protected Void doInBackground(Void... voids) {
 
-
             FTPSettings ftpSettings = new Gson().fromJson(pref.getFTPSettings(), FTPSettings.class);
             repository.uploadCSVFile(ftpSettings, new File(inspectedFiles.filePath),
                     inspectedFiles.propertyInfo.getPropertyId());
@@ -360,6 +363,11 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
                     PhotoData photoData = roomItem.getPhotosList().get(j);
                     repository.uploadFile(ftpSettings, new File(photoData.getImagePath()),
                             inspectedFiles.propertyInfo.getPropertyId());
+
+                    if (!repository.uploadFile(ftpSettings, new File(photoData.getImagePath()),
+                            inspectedFiles.propertyInfo.getPropertyId())) {
+                        isFtpUploadSuccess = false;
+                    }
                 }
             }
 
@@ -370,10 +378,6 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
 
-            FTPSettings ftpSettings = new Gson().fromJson(pref.getFTPSettings(), FTPSettings.class);
-
-            //inspectedFiles.uploadedPhotos = repository.numberOfUploadedPictures(ftpSettings, inspectedFiles.propertyInfo.getPropertyId()); //fileUploadedCount > 0 ? fileUploadedCount - 1 : 0;
-
             if (lUploadProgressDialog != null) {
                 lUploadProgressDialog.dismiss();
             }
@@ -383,61 +387,83 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
             if (isFtpUploadSuccess) {
                 String inspectedFiles = pref.getInspectedProperty();
 
-//                try {
-//                    JSONArray jsonArray;
-//                    JSONArray newItemsArray = new JSONArray();
-//                    if (inspectedFiles != null && inspectedFiles.length() > 0) {
-//                        jsonArray = new JSONArray(inspectedFiles);
-//                        for (int i = 0; i < jsonArray.length(); i++) {
-//                            if (i != position) {
-//                                newItemsArray.put(jsonArray.get(i));
-//                            }
-//                        }
-//                    }
-//                    pref.setInspectedProperty(newItemsArray.toString());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                try {
+                    JSONArray jsonArray;
+                    JSONArray newItemsArray = new JSONArray();
+                    if (inspectedFiles != null && inspectedFiles.length() > 0) {
+                        jsonArray = new JSONArray(inspectedFiles);
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            if (i != position) {
+                                newItemsArray.put(jsonArray.get(i));
+                            }
+                        }
+                    }
+                    pref.setInspectedProperty(newItemsArray.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
                 loadFileLists();
+            } else {
+                new android.app.AlertDialog.Builder(ListCompletedInspections.this)
+                        .setTitle("Some files failed to upload on FTP")
+                        .setMessage("Do you want to resume uploading?").setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        new UploadImagesFTP(inspectedFiles, position).execute();
+                    }
+                }).setNegativeButton("No", null).show();
             }
 
         }
 
     }
 
-        class FindUploadedFiles extends AsyncTask<Void, Void, Void> {
+    class FindUploadedFiles extends AsyncTask<Void, Void, Void> {
 
-            private InspectedFiles inspectedFiles;
+        private InspectedFiles inspectedFiles;
+        final ProgressDialog dialog = new ProgressDialog(ListCompletedInspections.this);
 
-            public FindUploadedFiles(InspectedFiles inspectedFiles) {
-                this.inspectedFiles = inspectedFiles;
-            }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
 
-            @Override
-            protected Void doInBackground(Void... voids) {
-                    AppPreference pref = ((PropertyInspector) getApplication()).getPreference();
-                    FTPRepository repository = new FTPRepository();
-                    repository.setFTPConnectionListener(ListCompletedInspections.this);
-                    repository.setFTPUploadListener(ListCompletedInspections.this);
-                try {
-                    FTPSettings ftpSettings = new Gson().fromJson(pref.getFTPSettings(), FTPSettings.class);
-                    inspectedFiles.setUploadedPhotos(repository.numberOfUploadedPictures(ftpSettings, inspectedFiles.propertyInfo.getPropertyId()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } finally {
-                    repository.closeFTPUploadConnection();
-                }
-
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void aVoid) {
-                super.onPostExecute(aVoid);
-
-                refreshRecyclerView();
-            }
+            dialog.setTitle("Please Wait");
+            dialog.setMessage("Loading data....");
+            dialog.setCancelable(false);
+            dialog.show();
         }
+
+        public FindUploadedFiles(InspectedFiles inspectedFiles) {
+            this.inspectedFiles = inspectedFiles;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            AppPreference pref = ((PropertyInspector) getApplication()).getPreference();
+            FTPRepository repository = new FTPRepository();
+            repository.setFTPConnectionListener(ListCompletedInspections.this);
+            repository.setFTPUploadListener(ListCompletedInspections.this);
+            try {
+                FTPSettings ftpSettings = new Gson().fromJson(pref.getFTPSettings(), FTPSettings.class);
+                inspectedFiles.setUploadedPhotos(repository.numberOfUploadedPictures(ftpSettings, inspectedFiles.propertyInfo.getPropertyId()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                repository.closeFTPUploadConnection();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+
+            refreshRecyclerView();
+
+            dialog.dismiss();
+        }
+    }
 
 }
