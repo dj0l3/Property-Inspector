@@ -326,6 +326,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             Intent intnt = new Intent(this, FilePickerActivity.class);
             intnt.putExtra(FilePickerActivity.REQ_MODE, FilePickerActivity.REQ_PICK_FILE);
             startActivityForResult(intnt, FilePickerActivity.REQ_PICK_FILE);
+            ListCompletedInspections.StaticButton.setPressedFalse();
 
         } else if (mActionId == R.id.butContinueInspection) {
             String versionFilePath = ((PropertyInspector) getApplication()).getPreference().getWorkFilePath();

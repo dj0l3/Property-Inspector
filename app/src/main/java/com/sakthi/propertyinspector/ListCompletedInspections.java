@@ -160,6 +160,7 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
                     pref.setWorkDirPath(workDir);
                     pref.setWorkFilePath(path);
                     loadPropertyFile(path, false);
+                    new StaticButton();
 
                 }
                 break;
@@ -463,6 +464,18 @@ public class ListCompletedInspections extends AppCompatActivity implements View.
             refreshRecyclerView();
 
             dialog.dismiss();
+        }
+    }
+
+    public static class StaticButton {
+        public static boolean isOpenSelectedFilePressed;
+
+        public StaticButton() {
+            isOpenSelectedFilePressed = true;
+        }
+
+        public static void setPressedFalse() {
+            isOpenSelectedFilePressed = false;
         }
     }
 

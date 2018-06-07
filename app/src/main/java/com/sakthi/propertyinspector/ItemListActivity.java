@@ -1,6 +1,7 @@
 package com.sakthi.propertyinspector;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -105,6 +106,13 @@ public class ItemListActivity extends AppCompatActivity{
 
         mListAdapter.setListItems(items);
 
+        if (items.size() == 0) {
+            new AlertDialog.Builder(this)
+                    .setTitle("")
+                    .setMessage("Confirm no items?").setPositiveButton("OK", null).show();
+
+        }
+
         SwipeToRemoveHelper swipeHelper=new SwipeToRemoveHelper(mListAdapter);
         ItemTouchHelper touchHelper=new ItemTouchHelper(swipeHelper);
         touchHelper.attachToRecyclerView(mRecyclerView);
@@ -118,7 +126,7 @@ public class ItemListActivity extends AppCompatActivity{
 
     }
 
-    public void onActivityResult(int req,int res,Intent data){
+    public void onActivityResult(int req, int res, Intent data){
 
        /* if(req==NEW_ITEM_REQ&&res== Activity.RESULT_OK){
            // mListAdapter.addItem(mPropertyInfo.getNewlyAddedArea(),true);

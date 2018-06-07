@@ -116,7 +116,17 @@ public class AreaActivity extends AppCompatActivity {
             mRoomType.setText("Type : "+mPropertyInfo.getRoomType(data.getTypeIndx()));
             mStatus.setText("Status : "+mPropertyInfo.getRoomStatus(data.getStatusIndx()));
 
-            mAnsPerc.setText(mPropertyInfo.getRoomStatics(data).percentage()+"%");
+            if (!ListCompletedInspections.StaticButton.isOpenSelectedFilePressed) {
+                if (mPropertyInfo.getRoomStatics(data).percentage() == 100
+                        && !data.getStatics().isAreaEntered()) {
+                    mAnsPerc.setText("0%");
+                } else {
+                    mAnsPerc.setText(mPropertyInfo.getRoomStatics(data).percentage() + "%");
+                }
+            } else {
+                mAnsPerc.setText(mPropertyInfo.getRoomStatics(data).percentage() + "%");
+            }
+
             mRootView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -124,6 +134,7 @@ public class AreaActivity extends AppCompatActivity {
                     Intent intent=new Intent(AreaActivity.this,ItemListActivity.class);
                     intent.putExtra("ROOM_ID",data.getRoomId());
                     startActivity(intent);
+                    data.getStatics().setAreaEntered(true);
                     //Snackbar.make(mRecyclerView,"Exception thrown when parsing items for "+data.getAliasName(),Snackbar.LENGTH_LONG).show();
                 }
             });

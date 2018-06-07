@@ -472,6 +472,7 @@ public class PropertyInfo {
         private int mTotalQuestions;
         private int mQuestionAnswered;
         private boolean isGroupQuestion;
+        private boolean isAreaEntered;
 
         public void set(int noQAnsw,int mTotalQues, boolean isGroupQuestion){
             mTotalQuestions=mTotalQues;
@@ -486,6 +487,14 @@ public class PropertyInfo {
             if(mTotalQuestions==0)mPercCompleted=100;
             else mPercCompleted=(int)(mQuestionAnswered*100.0f/mTotalQuestions);
 
+        }
+
+        public boolean isAreaEntered() {
+            return isAreaEntered;
+        }
+
+        public void setAreaEntered(boolean areaEntered) {
+            isAreaEntered = areaEntered;
         }
 
         public int getTotalQuestions(){return mTotalQuestions;}
