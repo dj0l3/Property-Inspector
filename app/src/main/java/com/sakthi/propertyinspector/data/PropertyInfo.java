@@ -485,7 +485,7 @@ public class PropertyInfo {
 //                else mPercCompleted=(int)(mQuestionAnswered*100.0f/mTotalQuestions);
 //            }
             if(mTotalQuestions==0)mPercCompleted=100;
-            else mPercCompleted=(int)(mQuestionAnswered*100.0f/mTotalQuestions);
+            else mPercCompleted= 100;//(int)(mQuestionAnswered*100.0f/mTotalQuestions);
 
         }
 

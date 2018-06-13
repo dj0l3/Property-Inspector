@@ -80,6 +80,8 @@ public class ItemListActivity extends AppCompatActivity{
 
         mArea=mPropertyInfo.getArea(mRoomId);
 
+
+
         setTitle(mArea.getAliasName()+" Items");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -103,6 +105,7 @@ public class ItemListActivity extends AppCompatActivity{
 
         ArrayList<RoomItem> items=mPropertyInfo.getAreaItems(mRoomId);
         //ParseUtil.sortRooItem(items);
+
 
         mListAdapter.setListItems(items);
 
@@ -220,7 +223,11 @@ public class ItemListActivity extends AppCompatActivity{
             mNote.setText((roomItem.getNote().trim().length()==0)?"Items note unavailable":"Note: "+roomItem.getNote());
             mPhotos.setText("Photos : "+roomItem.getNumberOfPhotos());
 
-            mAnsPerc.setText("Inspected : "+roomItem.getStatics().percentage()+"%");
+            if (roomItem.getStatics().isAreaEntered()) {
+                mAnsPerc.setText("Inspected : " + roomItem.getStatics().percentage() + "%");
+            } else {
+                mAnsPerc.setText("Inspected : 0%");
+            }
             mQty.setText("Qty : 1");
 
             mColor.setText(mPropertyInfo.getColor(roomItem.getColorId()));
@@ -235,6 +242,7 @@ public class ItemListActivity extends AppCompatActivity{
                     intent.putExtra("ROOM_ID",mRoomId);
                     intent.putExtra("INV_ID",roomItem.getInventoryId());
                     intent.putExtra("ITEM_ID",roomItem.getItemId());
+                    roomItem.getStatics().setAreaEntered(true);
                     startActivity(intent);
                 }
             });

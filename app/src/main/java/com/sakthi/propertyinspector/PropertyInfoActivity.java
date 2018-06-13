@@ -300,7 +300,7 @@ public class PropertyInfoActivity extends AppCompatActivity {
                     mAreaView.setText("" + numberOfArea);
                 }
                 if (mInsStatics != null) {
-                    mAnsPerc.setText(mInsStatics.percentage() + "%");
+                    mAnsPerc.setText(mInsStatics.getAnsweredQCount() / mInsStatics.getTotalQuestions() * 100 + "%");
                     mTotalQues.setText("" + mInsStatics.getTotalQuestions());
                     mNoQAnsw.setText("" + mInsStatics.getAnsweredQCount());
                 }
