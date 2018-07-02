@@ -57,6 +57,8 @@ public class ReportActivity extends AppCompatActivity {
     private RoomItemFragmentAdapter mAdapter;
     private PropertyInfo mPropertyInfo;
 
+    private ArrayList<Question> totalQuestions= new ArrayList<>();
+
     private int mRoomId;
     //private int mItemId;
     private int mInvId;
@@ -87,6 +89,18 @@ public class ReportActivity extends AppCompatActivity {
 
         setCurrentRoom();
 
+        totalQuestions = mRoomItem.getQuestions();
+//
+//        for (Question q : totalQuestions) {
+//            if (q.isAnswered()) {
+//                mRoomItem.getStatics().setAreaEntered(true);
+//            }
+//        }
+//
+//        if (totalQuestions.size() == 1) {
+//            mRoomItem.getStatics().setAreaEntered(true);
+//        }
+
         mItemPager.setOffscreenPageLimit(1);
         mItemPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -103,6 +117,7 @@ public class ReportActivity extends AppCompatActivity {
 
                 ((RoomItemFragment)getSupportFragmentManager().findFragmentByTag(name)).update();*/
                 setTitle(mAdapter.getItemData(position).getName());
+
                 saveOnPageScroll();
 
             }
@@ -476,12 +491,25 @@ public class ReportActivity extends AppCompatActivity {
                         RoomItem local = entry.getValue();
                         Log.e("Item Found",""+local.getItemId());
                         ArrayList<Question> questions=local.getQuestions();
+
                        /* for (Question question:questions){
                             Log.e("Question"+question.getAnswer(),question.getQuestionId()+":"+question.getQuestion());
                         };*/
                         for (RoomItem item : allItems) {
                             if(item.getInventoryId()==local.getInventoryId()){
                                 item.updateData(local);
+
+                                for (Question question : questions) {
+                                    if (question.isAnswered()) {
+                                        item.getStatics().setAreaEntered(true);
+                                    }
+                                }
+
+                                if (questions.size() == 0) {
+                                    item.getStatics().setAreaEntered(true);
+                                }
+
+                                //item.getStatics().setAreaEntered(true);
                             }
                             /*if (item.getItemId() == local.getItemId() && item.getRoomId() == local.getRoomId()) {
                                 item.updateData(local);
@@ -537,8 +565,19 @@ public class ReportActivity extends AppCompatActivity {
                      for (RoomItem item : allItems){
                          if(item.getInventoryId()==local.getInventoryId()){
                              item.updateData(local);
+
+                             if (item.getQuestions().size() == 0) {
+                                 item.getStatics().setAreaEntered(true);
+                             }
+
+                             for (Question a : item.getQuestions()) {
+                                 if (a.isAnswered()) {
+                                     item.getStatics().setAreaEntered(true);
+                                 }
+                             }
                          }
                      }
+
                 }
             }
 

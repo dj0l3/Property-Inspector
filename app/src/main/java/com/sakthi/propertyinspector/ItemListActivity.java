@@ -242,7 +242,7 @@ public class ItemListActivity extends AppCompatActivity{
                     intent.putExtra("ROOM_ID",mRoomId);
                     intent.putExtra("INV_ID",roomItem.getInventoryId());
                     intent.putExtra("ITEM_ID",roomItem.getItemId());
-                    roomItem.getStatics().setAreaEntered(true);
+                    //roomItem.getStatics().setAreaEntered(true);
                     startActivity(intent);
                 }
             });

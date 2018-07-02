@@ -119,9 +119,18 @@ public class AreaActivity extends AppCompatActivity {
             if (!ListCompletedInspections.StaticButton.isOpenSelectedFilePressed) {
                 if (mPropertyInfo.getRoomStatics(data).percentage() == 100
                         && !data.getStatics().isAreaEntered()) {
-                    mAnsPerc.setText("0%");
+
+                    if (mPropertyInfo.getRoomStatics(data).getAnsweredQCount() != 0) {
+                        mAnsPerc.setText(Integer.toString(mPropertyInfo.getRoomStatics(data).getAnsweredQCount() * 100 / mPropertyInfo.getRoomStatics(data).getTotalQuestions())+ "%");
+                    } else {
+                        mAnsPerc.setText("0%");
+                    }
                 } else {
-                    mAnsPerc.setText(mPropertyInfo.getRoomStatics(data).percentage() + "%");
+                    if (mPropertyInfo.getAreaItems(data.getRoomId()).size() == 0) {
+                        mAnsPerc.setText(mPropertyInfo.getRoomStatics(data).percentage() + "%");
+                    } else {
+                        mAnsPerc.setText(Integer.toString(mPropertyInfo.getRoomStatics(data).getAnsweredQCount() * 100 / mPropertyInfo.getRoomStatics(data).getTotalQuestions())+ "%");
+                    }
                 }
             } else {
                 mAnsPerc.setText(mPropertyInfo.getRoomStatics(data).percentage() + "%");
