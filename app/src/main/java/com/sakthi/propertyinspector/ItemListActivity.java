@@ -225,6 +225,8 @@ public class ItemListActivity extends AppCompatActivity{
 
             if (roomItem.getStatics().isAreaEntered()) {
                 mAnsPerc.setText("Inspected : " + roomItem.getStatics().percentage() + "%");
+            } else if (roomItem.getStatics().getAnsweredQCount() > 0) {
+                mAnsPerc.setText("Inspected : 100%");
             } else {
                 mAnsPerc.setText("Inspected : 0%");
             }

@@ -343,6 +343,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         } else if (mActionId == R.id.butDeleteAllInspectedFiles) {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle(R.string.dialog_title_delete);
+            //add pass to dialog
             builder.setMessage(R.string.dialog_message_delete_all_inspected_files);
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
